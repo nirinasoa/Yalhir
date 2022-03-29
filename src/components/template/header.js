@@ -26,6 +26,7 @@ function Header() {
                 <li><Link to="/artist">Add new & Artists</Link></li>
                 <li><Link to="/listsong">Lyrics & Songs</Link></li>
                 <li><Link to="/songs">Add new song</Link></li>
+                <li><Link to="/script">Generate script</Link></li>
             </ul>
         </li>
     </ul>

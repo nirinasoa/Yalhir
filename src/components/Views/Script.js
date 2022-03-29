@@ -8,7 +8,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 
 
 
-function ListSong() {
+function Script() {
     const [songs, setSong] = useState([]);
     const [artists, setArtist] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -80,26 +80,14 @@ function ListSong() {
        }
        return result
     }
-
   const displayData = (res) => {
     const data = res.data;
-    const slice = data.slice(offset, offset + perPage)
-    const postData = slice.map(item => 
-          <tr key={item._id}>
-                  <td>{displayArtist(item.idArtist)}</td>
-                  <td><Link to={`/detailsong/${item._id}`}>{item.title}</Link></td>
-                  <td>{item.orderSong}</td>
-                  <td>{item.yearProduction}</td>
-                  <td>{item.refrain}</td>
-                  <td>
-                      <i class="fa fa-trash" style={{color:'#e60e47', cursor:'pointer',fontSize:20}} onClick={() => deleteSong(item._id)}></i>&nbsp;&nbsp;
-                      <Link to={`/detailsong/${item._id}`}> <i class="fa fa-edit" style={{color:'#0c66ab', cursor:'pointer',fontSize:20}}></i></Link>
-                   </td>
-                  <td>  <Link to={`/detailsong/${item._id}`}> <i class="fa fa-eye" style={{cursor:'pointer',fontSize:20}}></i></Link>&nbsp;</td>
-          </tr>   
+    const postData = data.map(item => 
+        <div   key={item._id}>({item.idArtist},"{item.title}","{item.isFavorite}","{item.link}","{item.yearProduction}"
+        ,"{item.refrain}","{item.orderSong}","{item.paragraph1}","{item.paragraph2}","{item.paragraph3}","{item.paragraph4}","{item.paragraph5}","{item.paragraph6}"),</div> 
    )
      setSong(postData)
-    setPageCount(Math.ceil(data.length / perPage))
+   
   }
   const submitSearch = async(e) => {
     setSearch(e.target.value)
@@ -124,8 +112,8 @@ function ListSong() {
         <div class="container">
             <div class='row'>
                 <div class="col-lg-5"> 
-                <h3> <i class="fa fa-arrow-right"></i> Need to find a specific lyrics?</h3>
-                <p>You can search here by entering the title or the part of some lyrics</p>
+                <h3> <i class="fa fa-arrow-right"></i> Generate script sqlite here?</h3>
+                <p>You can generate dump sqlite here.</p>
                 </div>
                 <div class="col-lg-5">
                     <div class="d-flex h-100 align-items-end">
@@ -141,51 +129,42 @@ function ListSong() {
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-2" style={{color:'#ffffff',backgroundColor:'#011c40', padding:25,  }}>
-                    <Link to='/songs'><button class="btn btn-warning" type=""> <i class="fa fa-plus"></i> Add new song</button></Link><br/><br/>
-                    <p style={{color:'#ffffff'}}>Reminder:<br/>
+            <h4>Script Artist</h4>&nbsp;<br/>
+                <div class="col-lg-12" style={{ padding:25,border:'1px solid black'  }}>
+                    <div> INSERT INTO Artist (idArtist,username,belongsTo,photo)VALUES </div>
                     { artists.map(item =>
-                    <li  style={{color:'#ffffff'}} key={item._id}>{item.idArtist} &nbsp;<i class="fa fa-arrow-right"></i> &nbsp;{item.username}</li>
+                    <div   key={item._id}>({item.idArtist},"{item.username}","{item.belongsTo}","{item.photo}"),</div>
                     )}
-                    </p>
+                  
                 </div>
-                <div class="col-lg-10">
-                    <div class="section-title">
-                        <h4>List of songs</h4>&nbsp;<br/>
-                        <table class="table table-bordered">
-                                    <thead style={{backgroundColor:'#eee'}}>
-                                        <tr>
-                                            <th>Artist</th>
-                                            <th>Title</th>
-                                            <th>Order song</th>
-                                            <th>Date</th>
-                                            <th>Chorus part</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {songs}
-                         </tbody>
-                    </table>
-                    <div style={{marginLeft:'40%'}}>
-                    <ReactPaginate 
-                        previousLabel={<KeyboardArrowLeftIcon fontSize="medium"/>}
-                        nextLabel={<KeyboardArrowRightIcon fontSize="medium" />}
-                        breakLabel={"..."}
-                        breakClassName={"break-me"}
-                        pageCount={pageCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={"pagination"}
-                        subContainerClassName={"pages pagination"}
-                        activeClassName={"active"}/>
+                </div>
+                <div class="row">
+                <h4>Script Song</h4>&nbsp;<br/><br/>
+                <div class="col-lg-12" style={{border:'1px solid black'}}>
+                    <div>
+                    INSERT INTO Song (
+            idArtist,
+            title,
+            isFavorite,
+            link,
+            yearProduction,
+            refrain,
+            orderSong,
+            paragraph1,
+            paragraph2,
+            paragraph3,
+            paragraph4,
+            paragraph5,
+            paragraph6
+            )
+            VALUES
                     </div>
-
+                                        {songs}
+                         
                 
-       </div>
+   
         </div>
+
        
         </div>
        </div>
@@ -194,4 +173,4 @@ function ListSong() {
   );
 }
 
-export default ListSong;
+export default Script;
