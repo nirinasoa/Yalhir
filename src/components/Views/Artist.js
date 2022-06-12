@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useForm  } from "react-hook-form";
 import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
 import '../../components/style.css'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Axios from 'axios';
+import Moment from 'moment';
 
 function Artist() {
   const { register, handleSubmit,getValues ,reset} = useForm();
@@ -16,7 +18,7 @@ function Artist() {
   const [openFormEdit, setOpenFormEdit] = useState(false);
   const [artists, setArtists] = useState([]);
   const [offset, setOffset] = useState(0);
-  const [perPage] = useState(5);
+  const [perPage] = useState(10);
   const [pageCount, setPageCount] = useState(0)
   const [search, setSearch] = useState("")
   const [reponse, setReponse] = useState("")
@@ -31,6 +33,7 @@ function Artist() {
               <div class="song-info-box">
                   <img src={`assets/img/artist/${item.photo?item.photo:'noname.jpg'}`} alt=""/>
                   <div class="song-info">
+                  <Link to={`/detailsongArtist/${item.idArtist}`}>
                   {id == item._id?(
                             <div>
                               <input class="form-control" type="text" placeholder="Username" onChange={onChangeUsernameHandler} value={username}  />
@@ -44,6 +47,7 @@ function Artist() {
                       <h4>{item.username}</h4>
                       <p style={{fontSize:14}}>Id: {item.idArtist}<br/>Group: {item.belongsTo}</p>
                   </span>  } 
+                  </Link>
                   </div>
               </div>
           </div>
@@ -55,8 +59,8 @@ function Artist() {
       <hr/>
   </div>
    )
-   setArtists(postData)
-  setPageCount(Math.ceil(data.length / perPage))
+    setArtists(postData)
+    setPageCount(Math.ceil(data.length / perPage))
   }
   const getDataArtist = async() => {
     const res = await  Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/artists')

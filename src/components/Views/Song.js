@@ -22,6 +22,10 @@ function Song() {
     let paragraph4 = getValues("P4");
     let paragraph5 = getValues("P5");
     let paragraph6 = getValues("P6");
+    let paragraph7 = getValues("P7");
+    let paragraph8 = getValues("P8");
+    let paragraph9 = getValues("P9");
+    let paragraph10 = getValues("PX");
     const song={
         idArtist:IdArtist,
         title:title,
@@ -36,6 +40,10 @@ function Song() {
         paragraph4:paragraph4,
         paragraph5:paragraph5,
         paragraph6:paragraph6,
+        paragraph7:paragraph7,
+        paragraph8:paragraph8,
+        paragraph9:paragraph9,
+        paragraph10:paragraph10,
       }
       console.log(song);
       Axios.post('https://yalhir-nodejs-mongodb.herokuapp.com/song',song)
@@ -89,19 +97,27 @@ function Song() {
                                         <label for="">Paragrah 2:</label>
                                         <textarea class="form-control" rows="5"  {...register("P2")} placeholder="Paragrah" />  
                                         <label for="">Paragrah 3:</label>
-                                        <textarea  rows="5"class="form-control" {...register("P3")} placeholder="Paragrah" />   
+                                       <textarea  rows="5"class="form-control" {...register("P3")} placeholder="Paragrah" />   
+                                       <label for="">Paragrah 4:</label>
+                                        <textarea  rows="5" class="form-control" {...register("P4")} placeholder="Paragrah" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-5"><br/>
-                           <label for="">Paragrah 4:</label>
-                            <textarea  rows="5" class="form-control" {...register("P4")} placeholder="Paragrah" />
                             <label for="">Paragrah 5:</label>
                             <textarea rows="5" class="form-control" {...register("P5")} placeholder="Paragrah" />
                             <label for="">Paragrah 6:</label>
                             <textarea rows="5" class="form-control" {...register("P6")} placeholder="Paragrah" />
+                            <label for="">Paragrah 7:</label>
+                            <textarea rows="5" class="form-control" {...register("P7")} placeholder="Paragrah" />
+                            <label for="">Paragrah 8:</label>
+                            <textarea rows="5" class="form-control" {...register("P8")} placeholder="Paragrah" />
+                            <label for="">Paragrah 9:</label>
+                            <textarea rows="5" class="form-control" {...register("P9")} placeholder="Paragrah" />
+                            <label for="">Paragrah 10:</label>
+                            <textarea rows="5" class="form-control" {...register("PX")} placeholder="Paragrah" />
                             <label for="">Order of song:</label>
-                            <input class="form-control" {...register("order")} placeholder="P1,P2,P1,P3,..."  required/>
+                            <input class="form-control" {...register("order")} placeholder="P1,P2,P1,P3,P4,P5,P6,P7,P8,P9,PX(if P10)..."  required/>
                             <label for="">Place of chorus:</label>
                             <select class="form-control" {...register("refrain")} required>
                                 <option  value="P1" selected>P1</option>
@@ -110,6 +126,10 @@ function Song() {
                                 <option  value="P4">P4</option>
                                 <option  value="P5">P5</option>
                                 <option  value="P6">P6</option>
+                                <option  value="P7">P7</option>
+                                <option  value="P8">P8</option>
+                                <option  value="P9">P9</option>
+                                <option  value="PX">PX</option>
                             </select>
                             <br/>
                             <button style={{color:'white'}} class="btn btn-warning" type="submit"> <i class='fa fa-save'></i> Save & accept</button>&nbsp;&nbsp;

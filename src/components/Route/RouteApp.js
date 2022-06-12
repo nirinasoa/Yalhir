@@ -11,6 +11,7 @@ import PageNotFound from '../Views/PageNotFound';
 import Song from '../Views/Song';
 import DetailSong from '../Views/DetailSong';
 import Script from '../Views/Script';
+import ListSongArtist from '../Views/ListSongArtist';
 
 
 function RouteApp() {
@@ -25,6 +26,7 @@ function RouteApp() {
         <Route path='/songs' element={<Song/>} exact/>
         <Route path='/listsong' element={<ListSong/>} exact/>
         <Route path='/detailsong/:id' element={<DetailSong/>} exact/>
+        <Route path='/detailsongArtist/:id' element={<ListSongArtist/>} exact/>
         <Route path='/script' element={<Script/>} exact/>
         <Route path="*" element={<PageNotFound/>} />
     </Routes>

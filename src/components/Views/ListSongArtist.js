@@ -1,5 +1,5 @@
 import { useState , useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link , useParams} from 'react-router-dom';
 import Axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import '../../components/style.css'
@@ -8,20 +8,25 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Moment from 'moment';
 
 
-function ListSong() {
+function ListSongArtist() {
     const [songs, setSong] = useState([]);
     const [artists, setArtist] = useState([]);
+    const [nameArtist, setnameArtist] = useState();
+    const [photo, setPhoto] = useState();
     const [offset, setOffset] = useState(0);
-    const [perPage,setPerPage] = useState(20);
+    const [perPage,setPerPage] = useState(50);
     const [pageCount, setPageCount] = useState(0)
+    const [total, setTotal] = useState()
     const [search, setSearch] = useState("")
     const [reponse, setReponse] = useState("")
+    const { id } = useParams();
     
     const getDataSongs = async() => {
-        const res = await  Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/songs')
+        const res = await  Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/songArtist/'+id)
         displayData(res)
     } 
     useEffect(() => {
+        getArtistname()
         getDataSongs()
         Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/artists')
                 .then(response=>{
@@ -29,8 +34,19 @@ function ListSong() {
                  setArtist(list)
                  console.log(list)
         })
-    
+       
     }, [offset]);  
+    const getArtistname = () => {
+        Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/artistOne/'+id)
+        .then(response=>{
+        const list = response.data;
+        setnameArtist(list[0].username)
+        setPhoto(list[0].photo)
+        console.log(list)
+        })
+   }
+
+
     const handlePageClick = (e) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
@@ -48,7 +64,6 @@ function ListSong() {
         .then(response=>{
         const list = response.data;
         console.log(list)
-        
         })
 
     }
@@ -86,39 +101,40 @@ function ListSong() {
     const slice = data.slice(offset, offset + perPage)
     const postData = slice.map(item => 
           <tr key={item._id}>
-                  <td class="table-warning"> <Link to={`/detailsongArtist/${item.idArtist}`}>{displayArtist(item.idArtist)}</Link></td>
-                  <td ><Link to={`/detailsong/${item._id}`}>{item.title}</Link></td>
+                  <td class='table-warning'><Link to={`/detailsong/${item._id}`}>{item.title}</Link></td>
+                  <td style={{textTransform:'lowercase'}}>{item.paragraph1}...</td>
+                  <td>{Moment(item.createdAt).format('DD/MM/YYYY')}</td>
+                  <td>{Moment(item.createdAt).format('hh:mm')}</td>
                   <td>{item.orderSong}</td>
-                  <td>{item.yearProduction}</td>
-                  <td>{item.refrain}</td>
-                  <td>{Moment(item.createdAt).format('DD-MM-YYYY hh:mm')}</td>
                   <td>
                       <i class="fa fa-trash" style={{color:'#e60e47', cursor:'pointer',fontSize:20}} onClick={() => deleteSong(item._id)}></i>&nbsp;&nbsp;
                       <Link to={`/detailsong/${item._id}`}> <i class="fa fa-edit" style={{color:'#0c66ab', cursor:'pointer',fontSize:20}}></i></Link>
                    </td>
-                  <td>  <Link to={`/detailsong/${item._id}`}> <i class="fa fa-eye" style={{cursor:'pointer',fontSize:20}}></i></Link>&nbsp;</td>
           </tr>   
    )
      setSong(postData)
+     setTotal(data.length)
     setPageCount(Math.ceil(data.length / perPage))
   }
   const submitSearch = async(e) => {
     setSearch(e.target.value)
     const searchTxt = search;
-    const res = await Axios.post('https://yalhir-nodejs-mongodb.herokuapp.com/searchsong',{search:searchTxt})
+    const res = await Axios.post('https://yalhir-nodejs-mongodb.herokuapp.com/searchsongByArtist',{search:searchTxt , idArtist:id})
     displayData(res)
     setReponse(res.data.length+' result(s) found')
     if(searchTxt == ''){
-        const res = await  Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/songs')
-        displayData(res) 
-        setReponse('')
+        getDataSongs()
     }
  }
  const handle = (e) => {
     setPerPage(e.target.value)
     console.log(perPage)
  }
-
+ const findByArtist = async(e) => {
+    const res = Axios.get('https://yalhir-nodejs-mongodb.herokuapp.com/songArtist/'+id)
+    console.log(res)
+    // displayData(res) 
+ }
   return (
    <div>
       
@@ -126,7 +142,8 @@ function ListSong() {
         <div class="container">
             <div class='row'>
                 <div class="col-lg-5"> 
-                <h3> <i class="fa fa-arrow-right"></i> Need to find a specific lyrics?</h3>
+                <h3> <i class="fa fa-music"></i> {nameArtist} <span class="badge badge-pill badge-warning">{total}</span></h3>
+                
                 <p>You can search here by entering the title or the part of some lyrics</p>
                 </div>
                 <div class="col-lg-5">
@@ -147,23 +164,24 @@ function ListSong() {
                     <Link to='/songs'><button class="btn btn-info" type=""> <i class="fa fa-plus"></i> Add new song</button></Link><br/><br/>
                     <p style={{color:'#ffffff',fontSize:18}}>Songs by artist:<br/>
                     { artists.map(item =>
-                    <Link  to={`/detailsongArtist/${item.idArtist}`}><li class="btn btn-warning"  key={item._id}><i class="fa fa-music"></i> &nbsp;{item.username}</li><br/><br/></Link>
+                    <a  href={`/detailsongArtist/${item.idArtist}`}><li class="btn btn-warning"  key={item._id}><i class="fa fa-music"></i> &nbsp;{item.username}</li><br/><br/></a>
                     )}
                     </p>
                 </div>
                 <div class="col-lg-10">
                     <div class="section-title">
-                        <h4>List of songs</h4>&nbsp;<br/>
+                        <h4>List of songs by {nameArtist}</h4>&nbsp;<br/>
+                        <div class="alert alert-success" style={{width:'30%'}} role="alert">
+                            <h6>Total of songs saved: <span class='text-danger'>{total}</span></h6>
+                        </div>
                         <table class="table table-bordered">
                                     <thead style={{backgroundColor:'#eee'}}>
                                         <tr>
-                                            <th>Artist</th>
                                             <th>Title</th>
+                                            <th>Paragraph1</th>
+                                            <th>Created At</th>
+                                            <th>Hour</th>
                                             <th>Order song</th>
-                                            <th>Date</th>
-                                            <th>Chorus part</th>
-                                            <th>Created at</th>
-                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -175,11 +193,7 @@ function ListSong() {
                     <ReactPaginate 
                         previousLabel={<KeyboardArrowLeftIcon fontSize="medium"/>}
                         nextLabel={<KeyboardArrowRightIcon fontSize="medium" />}
-                        breakLabel={"..."}
-                        breakClassName={"break-me"}
                         pageCount={pageCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
                         onPageChange={handlePageClick}
                         containerClassName={"pagination"}
                         subContainerClassName={"pages pagination"}
@@ -197,4 +211,4 @@ function ListSong() {
   );
 }
 
-export default ListSong;
+export default ListSongArtist;

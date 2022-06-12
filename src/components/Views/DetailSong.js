@@ -20,6 +20,10 @@ const [paragraph3, setParagraph3] = useState('');
 const [paragraph4, setParagraph4] = useState('');
 const [paragraph5, setParagraph5] = useState('');
 const [paragraph6, setParagraph6] = useState('');
+const [paragraph7, setParagraph7] = useState('');
+const [paragraph8, setParagraph8] = useState('');
+const [paragraph9, setParagraph9] = useState('');
+const [paragraph10, setParagraph10] = useState('');
 const [response, setResponse] = useState('');
 const [_id, set_id] = useState('');
 
@@ -38,6 +42,10 @@ useEffect(() => {
             setParagraph4(list.paragraph4)
             setParagraph5(list.paragraph5)
             setParagraph6(list.paragraph6)
+            setParagraph7(list.paragraph7)
+            setParagraph8(list.paragraph8)
+            setParagraph9(list.paragraph9)
+            setParagraph10(list.paragraph10)
             set_id(list.id)
             const arrayOrder = list.orderSong.split(",");
             for(var i=0; i < arrayOrder.length; i++) {
@@ -47,6 +55,10 @@ useEffect(() => {
                                              .replace('P4', list.refrain === 'P4' ? '[Ref] '+ list.paragraph4 :list.paragraph4)
                                              .replace('P5', list.refrain === 'P5' ? '[Ref] '+ list.paragraph5 :list.paragraph5)
                                              .replace('P6', list.refrain === 'P6' ? '[Ref] '+ list.paragraph6 :list.paragraph6)
+                                             .replace('P7', list.refrain === 'P7' ? '[Ref] '+ list.paragraph7 :list.paragraph7)
+                                             .replace('P8', list.refrain === 'P8' ? '[Ref] '+ list.paragraph8 :list.paragraph8)
+                                             .replace('P9', list.refrain === 'P9' ? '[Ref] '+ list.paragraph9 :list.paragraph9)
+                                             .replace('PX', list.refrain === 'PX' ? '[Ref] '+ list.paragraph10 :list.paragraph10)
                 
 
                }
@@ -82,6 +94,10 @@ useEffect(() => {
         paragraph4 : paragraph4,
         paragraph5 : paragraph5,
         paragraph6 : paragraph6,
+        paragraph7 : paragraph7,
+        paragraph8 : paragraph8,
+        paragraph9 : paragraph9,
+        paragraph10 : paragraph10,
     }
     Axios.patch('https://yalhir-nodejs-mongodb.herokuapp.com/song/'+id,song)
     .then(res => {
@@ -136,6 +152,14 @@ useEffect(() => {
                                 <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph5(e.target.value)} value={paragraph5}/>
                                 <label for="">Paragraph6: {refrain === 'P6' ? <strong>  [Chrorus part]<img src="https://thumbs.dreamstime.com/b/dessin-d-%C3%A9coute-emoji-de-musique-l-isol%C3%A9e-sur-le-fond-blanc-201765263.jpg" style={{flex:1, width:50,paddingTop:20}}/></strong>:''}</label>
                                 <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph6(e.target.value)} value={paragraph6}/>
+                                <label for="">Paragraph7: {refrain === 'P7' ? <strong>  [Chrorus part]<img src="https://thumbs.dreamstime.com/b/dessin-d-%C3%A9coute-emoji-de-musique-l-isol%C3%A9e-sur-le-fond-blanc-201765263.jpg" style={{flex:1, width:50,paddingTop:20}}/></strong>:''}</label>
+                                <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph7(e.target.value)} value={paragraph7}/>
+                                <label for="">Paragraph8: {refrain === 'P8' ? <strong>  [Chrorus part]<img src="https://thumbs.dreamstime.com/b/dessin-d-%C3%A9coute-emoji-de-musique-l-isol%C3%A9e-sur-le-fond-blanc-201765263.jpg" style={{flex:1, width:50,paddingTop:20}}/></strong>:''}</label>
+                                <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph8(e.target.value)} value={paragraph8}/>
+                                <label for="">Paragraph9: {refrain === 'P9' ? <strong>  [Chrorus part]<img src="https://thumbs.dreamstime.com/b/dessin-d-%C3%A9coute-emoji-de-musique-l-isol%C3%A9e-sur-le-fond-blanc-201765263.jpg" style={{flex:1, width:50,paddingTop:20}}/></strong>:''}</label>
+                                <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph9(e.target.value)} value={paragraph9}/>
+                                <label for="">Paragraph10: {refrain === 'PX' ? <strong>  [Chrorus part]<img src="https://thumbs.dreamstime.com/b/dessin-d-%C3%A9coute-emoji-de-musique-l-isol%C3%A9e-sur-le-fond-blanc-201765263.jpg" style={{flex:1, width:50,paddingTop:20}}/></strong>:''}</label>
+                                <textarea rows="10" class="form-control" type="text" name=""  onChange={e => setParagraph10(e.target.value)} value={paragraph10}/>
                             </div>
                             
                             }
